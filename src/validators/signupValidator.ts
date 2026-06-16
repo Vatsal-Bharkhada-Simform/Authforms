@@ -52,19 +52,18 @@ export const signupValidator = z
 			.regex(/^[0-9]+$/, "Contact number must contain only numbers"),
 
 		profileImage: z
-			.instanceof(File, {
-				message: "Please upload a valid profile image file",
-			})
+			.any()
+			.refine((files) => files?.length > 0, "Profile image is required.")
 			.refine(
-				(file) => file.size <= 1_000_000,
-				"Image size must be less than 1MB"
+				(files) => files?.[0]?.size <= 1_000_000,
+				"Image size must be less than 1MB."
 			)
 			.refine(
-				(file) =>
-					["image/png", "image/jpeg", "image/jpg"].includes(
-						file.type
+				(files) =>
+					["image/jpeg", "image/jpg", "image/png"].includes(
+						files?.[0]?.type
 					),
-				"Only .png, .jpg, and .jpeg formats are accepted"
+				"Only .jpeg, .jpg, and .png formats are accepted."
 			),
 
 		birthDate: z
