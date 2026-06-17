@@ -13,7 +13,7 @@ export function Input({
 	const hasError = errorText.trim() !== "";
 
 	return (
-		<div className="flex flex-col gap-1 mb-4">
+		<div className={`flex flex-col gap-1 ${type !== "checkbox" && "mb-4"}`}>
 			{labelText.trim() && (
 				<label
 					htmlFor={id}

@@ -6,130 +6,227 @@ import type { SignUpType } from "../types/formDataTypes";
 import { Input } from "../UI/Input";
 import Button from "../UI/Button";
 import { PasswordInput } from "../UI/PasswordInput";
+import { Select } from "../UI/Select";
+import React, { useState } from "react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
+
+// This array represents the input fields of each step of the form
+const Fields: Array<Array<keyof SignUpType>> = [
+	["firstName", "lastName", "email", "contact", "agreementConfirmation"],
+	["city", "state", "address"],
+	["age", "gender", "birthDate", "profileImage"],
+	["password", "confirmPassword"],
+];
 
 export function SignUpForm() {
+	const [formStep, setFormStep] = useState(0);
+
 	const {
 		formState: { errors, isSubmitting },
 		register,
-		reset,
 		handleSubmit,
+		trigger,
 	} = useForm<SignUpType>({
 		resolver: zodResolver(signupValidator),
+		mode: "onBlur",
 	});
 
 	const { handleSignUp } = useAuth();
 
+	async function incrementStep(e: React.MouseEvent<HTMLButtonElement>) {
+		e.preventDefault();
+		const isValid = await trigger(Fields[formStep]);
+
+		if (isValid && formStep < Fields.length - 1) {
+			setFormStep((prev) => prev + 1);
+		}
+	}
+
+	function decrementStep() {
+		setFormStep((prev) => prev - 1);
+	}
+
 	return (
-		<form onSubmit={handleSubmit(handleSignUp)}>
-			<div className="w-full flex flex-col gap-2 px-2">
-				<Input
-					type="text"
-					{...register("firstName")}
-					labelText="First Name"
-					errorText={errors?.firstName?.message ?? ""}
-					disabled={isSubmitting}
-				/>
-				<Input
-					type="text"
-					{...register("lastName")}
-					labelText="Last Name"
-					errorText={errors?.lastName?.message ?? ""}
-					disabled={isSubmitting}
-				/>
-				<Input
-					type="email"
-					{...register("email")}
-					labelText="Email"
-					errorText={errors?.email?.message ?? ""}
-					disabled={isSubmitting}
-				/>
-				<Input
-					type="tel"
-					{...register("contact")}
-					labelText="Contact"
-					errorText={errors?.contact?.message ?? ""}
-					disabled={isSubmitting}
-				/>
-				<Input
-					type="text"
-					{...register("city")}
-					labelText="City"
-					errorText={errors?.city?.message ?? ""}
-					disabled={isSubmitting}
-				/>
-				<Input
-					type="text"
-					{...register("state")}
-					labelText="State"
-					errorText={errors?.state?.message ?? ""}
-					disabled={isSubmitting}
-				/>
-				<Input
-					type="text"
-					{...register("address")}
-					labelText="Address"
-					errorText={errors?.address?.message ?? ""}
-					disabled={isSubmitting}
-				/>
-				<Input
-					type="number"
-					{...register("age", { valueAsNumber: true })}
-					labelText="Age"
-					errorText={errors?.age?.message ?? ""}
-					disabled={isSubmitting}
-				/>
-				<Input
-					type="text"
-					{...register("gender")}
-					labelText="Gender"
-					errorText={errors?.gender?.message ?? ""}
-					disabled={isSubmitting}
-				/>
-				<Input
-					type="file"
-					accept="image/png, image/jpeg, image/jpg"
-					{...register("profileImage")}
-					labelText="Profile Image"
-					errorText={errors?.profileImage?.message.toString() ?? ""}
-					disabled={isSubmitting}
-				/>
-				<Input
-					type="date"
-					{...register("birthDate", { valueAsDate: true })}
-					labelText="Birth Date"
-					errorText={errors?.birthDate?.message ?? ""}
-					disabled={isSubmitting}
-				/>
-				<PasswordInput
-					{...register("password")}
-					labelText="Password"
-					errorText={errors?.password?.message ?? ""}
-					disabled={isSubmitting}
-				/>
-				<PasswordInput
-					{...register("confirmPassword")}
-					labelText="Confirm Password"
-					errorText={errors?.confirmPassword?.message ?? ""}
-					disabled={isSubmitting}
-				/>
-				<Input
-					type="checkbox"
-					{...register("agreementConfirmation")}
-					labelText="I accept the Terms of use and Privacy Policy"
-					errorText={errors?.agreementConfirmation?.message ?? ""}
-					disabled={isSubmitting}
-				/>
+		<form
+			onSubmit={handleSubmit(handleSignUp)}
+			className="flex-1 flex flex-col min-h-0"
+		>
+			<div className="w-full flex flex-col gap-2 px-2 overflow-y-auto">
+				{formStep === 0 && (
+					<>
+						<Input
+							type="text"
+							{...register("firstName")}
+							labelText="First Name"
+							placeholder="John"
+							errorText={errors?.firstName?.message ?? ""}
+							disabled={isSubmitting}
+						/>
+						<Input
+							type="text"
+							{...register("lastName")}
+							labelText="Last Name"
+							placeholder="Doe"
+							errorText={errors?.lastName?.message ?? ""}
+							disabled={isSubmitting}
+						/>
+						<Input
+							type="email"
+							{...register("email")}
+							labelText="Email"
+							placeholder="abc@gmail.com"
+							errorText={errors?.email?.message ?? ""}
+							disabled={isSubmitting}
+						/>
+						<Input
+							type="tel"
+							{...register("contact")}
+							labelText="Contact"
+							placeholder="123xxxxxx0"
+							errorText={errors?.contact?.message ?? ""}
+							disabled={isSubmitting}
+						/>
+					</>
+				)}
+				{formStep === 1 && (
+					<>
+						<Input
+							type="text"
+							{...register("city")}
+							labelText="City"
+							placeholder="e.g. Ahmedabad"
+							errorText={errors?.city?.message ?? ""}
+							disabled={isSubmitting}
+						/>
+						<Input
+							type="text"
+							{...register("state")}
+							labelText="State"
+							placeholder="e.g. Gujarat"
+							errorText={errors?.state?.message ?? ""}
+							disabled={isSubmitting}
+						/>
+						<Input
+							type="text"
+							{...register("address")}
+							labelText="Address"
+							placeholder="e.g. 123, XYZ street"
+							errorText={errors?.address?.message ?? ""}
+							disabled={isSubmitting}
+						/>
+					</>
+				)}
+				{formStep === 2 && (
+					<>
+						<Input
+							type="number"
+							{...register("age", { valueAsNumber: true })}
+							labelText="Age"
+							placeholder="e.g. 20"
+							errorText={errors?.age?.message ?? ""}
+							disabled={isSubmitting}
+						/>
+						<Select
+							{...register("gender")}
+							options={["Male", "Female", "Other"]}
+							defaultOptionText="Select your gender"
+							labelText="Gender"
+							errorText={errors?.gender?.message ?? ""}
+							disabled={isSubmitting}
+						/>
+						<Input
+							type="file"
+							accept="image/png, image/jpeg, image/jpg"
+							{...register("profileImage")}
+							labelText="Profile Image"
+							placeholder="Upload a profile image"
+							errorText={
+								errors?.profileImage?.message?.toString() ?? ""
+							}
+							disabled={isSubmitting}
+						/>
+						<Input
+							type="date"
+							{...register("birthDate", { valueAsDate: true })}
+							labelText="Birth Date"
+							placeholder=""
+							errorText={errors?.birthDate?.message ?? ""}
+							disabled={isSubmitting}
+						/>
+					</>
+				)}
+				{formStep === 3 && (
+					<>
+						<PasswordInput
+							{...register("password")}
+							labelText="Password"
+							placeholder="********"
+							errorText={errors?.password?.message ?? ""}
+							disabled={isSubmitting}
+						/>
+						<PasswordInput
+							{...register("confirmPassword")}
+							labelText="Confirm Password"
+							placeholder="********"
+							errorText={errors?.confirmPassword?.message ?? ""}
+							disabled={isSubmitting}
+						/>
+					</>
+				)}
 			</div>
-			<Button variant="PRIMARY" disabled={isSubmitting}>
-				Submit
-			</Button>
-			<Button
-				variant="SECONDARY"
-				disabled={isSubmitting}
-				onClick={() => reset()}
-			>
-				Reset
-			</Button>
+			<div className="flex gap-4 p-2 justify-between">
+				{formStep === 0 && (
+					<div className="flex gap-2 items-center relative">
+						<Input
+							type="checkbox"
+							{...register("agreementConfirmation")}
+							disabled={isSubmitting}
+							id="agreementConfirmation"
+						/>
+						<label
+							htmlFor="agreementConfirmation"
+							className="text-sm"
+						>
+							{errors?.agreementConfirmation &&
+							errors?.agreementConfirmation?.message !== "" ? (
+								<div className="text-red-400">
+									{errors?.agreementConfirmation?.message}
+								</div>
+							) : (
+								"I accept the Terms and Privacy Policy"
+							)}
+						</label>
+					</div>
+				)}
+				{formStep > 0 && (
+					<Button
+						type="button"
+						variant="SECONDARY"
+						disabled={isSubmitting}
+						onClick={decrementStep}
+						className="inline-flex items-center gap-2"
+					>
+						<ArrowLeft size={18} />
+						Back
+					</Button>
+				)}
+				{formStep < 3 ? (
+					<Button
+						type="button"
+						variant="PRIMARY"
+						disabled={isSubmitting}
+						className="inline-flex items-center gap-2"
+						onClick={incrementStep}
+					>
+						Next
+						<ArrowRight size={18} />
+					</Button>
+				) : (
+					<Button variant="PRIMARY" disabled={isSubmitting}>
+						Submit
+					</Button>
+				)}
+			</div>
 		</form>
 	);
 }

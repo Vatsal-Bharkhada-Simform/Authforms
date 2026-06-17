@@ -90,13 +90,16 @@ export const signupValidator = z
 			)
 			.regex(/^[^<>]*$/, "Password contains invalid characters (< or >)"),
 
-		confirmPassword: z.string().min(1, "Please confirm your password"),
+		confirmPassword: z
+			.string()
+			.min(8, "Password must be at least 8 characters long")
+			.max(20, "Password cannot exceed 20 characters"),
 
 		agreementConfirmation: z
 			.boolean()
 			.refine(
 				(val) => val === true,
-				"You must agree to the privacy policy and legal terms to sign up"
+				"You must agree to the terms and privacy policy to sign up"
 			),
 	})
 	.refine((obj) => obj.password === obj.confirmPassword, {
