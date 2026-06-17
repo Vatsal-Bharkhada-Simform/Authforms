@@ -1,7 +1,13 @@
+import { LoginForm } from "../components/LoginForm";
+import { AuthFormComposition } from "../layout/AuthFormComposition";
+
 export function Login() {
 	return (
-		<>
-			<h1>Login</h1>
-		</>
+		<AuthFormComposition
+			header="Login"
+			description="Login using your email and password"
+		>
+			<LoginForm />
+		</AuthFormComposition>
 	);
 }

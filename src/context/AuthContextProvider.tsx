@@ -34,6 +34,7 @@ export function AuthContextProvider({ children }: { children: ReactElement }) {
 			status: true,
 			userEmail: user.email,
 		});
+		toast.success("Logged in successfully!");
 	}
 
 	function handleLogout() {

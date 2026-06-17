@@ -2,8 +2,11 @@ import { Route, BrowserRouter as Router, Routes } from "react-router";
 import { SignUp } from "./pages/SignUp";
 import { Login } from "./pages/Login";
 import { AuthLayout } from "./layout/AuthLayout";
+import { useAuth } from "./context/useAuth";
 
 function App() {
+	// const {isAuthenticated} = useAuth();
+
 	return (
 		<Router>
 			<Routes>
