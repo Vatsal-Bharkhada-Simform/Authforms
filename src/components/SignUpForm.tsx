@@ -7,8 +7,13 @@ import { Input } from "../UI/Input";
 import Button from "../UI/Button";
 import { PasswordInput } from "../UI/PasswordInput";
 import { Select } from "../UI/Select";
-import React, { useState } from "react";
+import { type MouseEvent } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
+
+type SignUpFormProps = {
+	formStep: number;
+	setFormStep: React.Dispatch<React.SetStateAction<number>>;
+};
 
 // This array represents the input fields of each step of the form
 const Fields: Array<Array<keyof SignUpType>> = [
@@ -18,9 +23,7 @@ const Fields: Array<Array<keyof SignUpType>> = [
 	["password", "confirmPassword"],
 ];
 
-export function SignUpForm() {
-	const [formStep, setFormStep] = useState(0);
-
+export function SignUpForm({ formStep, setFormStep }: SignUpFormProps) {
 	const {
 		formState: { errors, isSubmitting },
 		register,
@@ -33,7 +36,7 @@ export function SignUpForm() {
 
 	const { handleSignUp } = useAuth();
 
-	async function incrementStep(e: React.MouseEvent<HTMLButtonElement>) {
+	async function incrementStep(e: MouseEvent<HTMLButtonElement>) {
 		e.preventDefault();
 		const isValid = await trigger(Fields[formStep]);
 
@@ -49,9 +52,9 @@ export function SignUpForm() {
 	return (
 		<form
 			onSubmit={handleSubmit(handleSignUp)}
-			className="flex-1 flex flex-col min-h-0"
+			className="flex-1 flex flex-col gap-4 px-1"
 		>
-			<div className="w-full flex flex-col gap-2 px-2 overflow-y-auto">
+			<div className="w-full flex flex-col gap-2">
 				{formStep === 0 && (
 					<>
 						<Input
@@ -174,9 +177,9 @@ export function SignUpForm() {
 					</>
 				)}
 			</div>
-			<div className="flex gap-4 p-2 justify-between">
+			<div className="flex gap-4 justify-between">
 				{formStep === 0 && (
-					<div className="flex gap-2 items-center relative">
+					<div className="flex gap-2 pl-2 items-center relative">
 						<Input
 							type="checkbox"
 							{...register("agreementConfirmation")}

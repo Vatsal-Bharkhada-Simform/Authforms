@@ -17,7 +17,7 @@ export function Input({
 			{labelText.trim() && (
 				<label
 					htmlFor={id}
-					className={`md:text-md font-inter tracking-tight text-primary leading-none ${hasError && "text-red-500"}`}
+					className={`md:text-md font-inter tracking-tight text-primary leading-none ${hasError ? "text-red-500" : "text-gray-700"}`}
 				>
 					{labelText}
 					{props.required && (
