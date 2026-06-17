@@ -5,8 +5,8 @@ export const AuthContext = createContext<AuthContextType>({
 	isAuthenticated: {
 		status: false,
 	},
-	handleSignUp: () => {},
-	handleLogin: () => {},
+	handleSignUp: () => false,
+	handleLogin: () => false,
 	handleLogout: () => {},
 	getUserData: () => {},
 });

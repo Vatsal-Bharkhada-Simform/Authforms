@@ -29,7 +29,7 @@ function SignUp() {
 
 	function generateIndicators() {
 		return (
-			<>
+			<div className="flex gap-2 pt-4">
 				{Array.from({ length: MAX_STEPS }).map((_, index) => {
 					return (
 						<div
@@ -38,7 +38,7 @@ function SignUp() {
 						></div>
 					);
 				})}
-			</>
+			</div>
 		);
 	}
 

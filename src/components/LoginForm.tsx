@@ -6,6 +6,8 @@ import { useAuth } from "../context/useAuth";
 import { Input } from "../UI/Input";
 import { PasswordInput } from "../UI/PasswordInput";
 import Button from "../UI/Button";
+import { useNavigate } from "react-router";
+import toast from "react-hot-toast";
 
 export function LoginForm() {
 	const {
@@ -18,10 +20,20 @@ export function LoginForm() {
 	});
 
 	const { handleLogin } = useAuth();
+	const navigate = useNavigate();
+
+	function loginUser(data: LoginType) {
+		const res = handleLogin(data);
+		if (res) {
+			navigate("/");
+		} else {
+			toast.error("Something went wrong");
+		}
+	}
 
 	return (
 		<form
-			onSubmit={handleSubmit(handleLogin)}
+			onSubmit={handleSubmit(loginUser)}
 			className="flex flex-col gap-4"
 		>
 			<div className="flex flex-col gap-2">

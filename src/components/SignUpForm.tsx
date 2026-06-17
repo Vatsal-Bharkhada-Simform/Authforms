@@ -9,6 +9,8 @@ import { PasswordInput } from "../UI/PasswordInput";
 import { Select } from "../UI/Select";
 import { type MouseEvent } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router";
 
 type SignUpFormProps = {
 	formStep: number;
@@ -35,6 +37,16 @@ export function SignUpForm({ formStep, setFormStep }: SignUpFormProps) {
 	});
 
 	const { handleSignUp } = useAuth();
+	const navigate = useNavigate();
+
+	function signUpUser(data: SignUpType) {
+		const res = handleSignUp(data);
+		if (res) {
+			navigate("/");
+		} else {
+			toast.error("Something went wrong");
+		}
+	}
 
 	async function incrementStep(e: MouseEvent<HTMLButtonElement>) {
 		e.preventDefault();
@@ -51,7 +63,7 @@ export function SignUpForm({ formStep, setFormStep }: SignUpFormProps) {
 
 	return (
 		<form
-			onSubmit={handleSubmit(handleSignUp)}
+			onSubmit={handleSubmit(signUpUser)}
 			className="flex-1 flex flex-col gap-4 px-1"
 		>
 			<div className="w-full flex flex-col gap-2">

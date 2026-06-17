@@ -24,17 +24,19 @@ export function AuthContextProvider({ children }: { children: ReactElement }) {
 			userEmail: data.email,
 		});
 		toast.success("Signed up successfully!");
+		return true;
 	}
 
 	function handleLogin(data: LoginType) {
 		console.log(data);
 		const user = userData.find((user) => user.email === data.email);
-		if (!user || !(user.password === data.password)) return;
+		if (!user || !(user.password === data.password)) return false;
 		setIsAuthenticated({
 			status: true,
 			userEmail: user.email,
 		});
 		toast.success("Logged in successfully!");
+		return true;
 	}
 
 	function handleLogout() {
