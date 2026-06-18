@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { SignUpForm } from "../components/SignUpForm";
 import { AuthFormComposition } from "../layout/AuthFormComposition";
+import { Link } from "react-router";
 
 const stepMessages = [
 	{
@@ -47,6 +48,17 @@ function SignUp() {
 			header={stepMessages[formStep].heading}
 			description={stepMessages[formStep].description}
 			headerAddOn={generateIndicators()}
+			navigationOption={
+				<>
+					Already have an account?{" "}
+					<Link
+						to={"/auth/login"}
+						className="font-semibold text-blue-600"
+					>
+						Login
+					</Link>
+				</>
+			}
 		>
 			<SignUpForm formStep={formStep} setFormStep={setFormStep} />
 		</AuthFormComposition>
