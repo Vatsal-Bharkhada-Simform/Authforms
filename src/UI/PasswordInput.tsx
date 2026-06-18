@@ -1,5 +1,5 @@
 import { Eye, EyeOff } from "lucide-react";
-import { useState } from "react";
+import { useId, useState } from "react";
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 	labelText?: string;
@@ -9,17 +9,17 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 export function PasswordInput({
 	labelText = "",
 	errorText = "",
-	id,
 	...props
 }: InputProps) {
 	const [showPassword, setShowPassword] = useState(false);
+	const ID = useId();
 	const hasError = errorText.trim() !== "";
 
 	return (
 		<div className="flex flex-col gap-1 mb-4">
 			{labelText.trim() && (
 				<label
-					htmlFor={id}
+					htmlFor={props.id ?? ID}
 					className={`md:text-md font-inter tracking-tight text-primary leading-none ${hasError && "text-red-500"}`}
 				>
 					{labelText}
@@ -35,12 +35,13 @@ export function PasswordInput({
 				<input
 					type={showPassword ? "text" : "password"}
 					className="outline-none flex-1"
-					id={id}
 					{...props}
+					id={props.id ?? ID}
 				/>
 				<button
 					onClick={() => setShowPassword((prev) => !prev)}
 					className="p-1 cursor-pointer"
+					title="Toggle passoword visibility"
 				>
 					{showPassword ? <EyeOff size={17} /> : <Eye size={17} />}
 				</button>

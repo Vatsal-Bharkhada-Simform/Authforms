@@ -1,3 +1,5 @@
+import { useId } from "react";
+
 interface SelectProps<
 	T extends Array<string>,
 > extends React.SelectHTMLAttributes<HTMLSelectElement> {
@@ -9,7 +11,6 @@ interface SelectProps<
 }
 
 export function Select<const T extends Array<string>>({
-	id,
 	options,
 	defaultSelected,
 	defaultOptionText,
@@ -17,13 +18,14 @@ export function Select<const T extends Array<string>>({
 	errorText = "",
 	...props
 }: SelectProps<T>) {
+	const ID = useId();
 	const hasError = errorText.trim() !== "";
 
 	return (
 		<div className="flex flex-col gap-1 mb-4">
 			{labelText.trim() && (
 				<label
-					htmlFor={id}
+					htmlFor={props.id ?? ID}
 					className={`md:text-md font-inter tracking-tight text-primary leading-none ${hasError && "text-red-500"}`}
 				>
 					{labelText}
@@ -33,12 +35,12 @@ export function Select<const T extends Array<string>>({
 				</label>
 			)}
 			<select
-				id={id}
 				className={`w-full px-3 py-1.5 text-md text-gray-800 bg-gray-50 border-2 border-gray-300 focus:border-blue-400 outline-0 focus:outline-3 outline-blue-100 rounded-xl leading-none transition-all duration-100 
                     ${hasError && "border-red-300 focus:border-red-300 focus:outline-2 outline-red-100"}
                 `}
 				defaultValue={defaultSelected ?? defaultOptionText ?? "Select"}
 				{...props}
+				id={props.id ?? ID}
 			>
 				<option value="Select">{defaultOptionText ?? "Select"}</option>
 				{options.map((option) => {

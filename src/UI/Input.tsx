@@ -1,3 +1,5 @@
+import { useId } from "react";
+
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 	labelText?: string;
 	errorText?: string;
@@ -6,17 +8,17 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 export function Input({
 	labelText = "",
 	errorText = "",
-	id,
 	type,
 	...props
 }: InputProps) {
+	const ID = useId();
 	const hasError = errorText.trim() !== "";
 
 	return (
 		<div className={`flex flex-col gap-1 ${type !== "checkbox" && "mb-4"}`}>
 			{labelText.trim() && (
 				<label
-					htmlFor={id}
+					htmlFor={props.id ?? ID}
 					className={`md:text-md font-inter tracking-tight text-primary leading-none ${hasError ? "text-red-500" : "text-gray-700"}`}
 				>
 					{labelText}
@@ -27,11 +29,11 @@ export function Input({
 			)}
 			<input
 				type={type}
-				id={id}
 				className={`w-full px-3 py-1.5 text-md text-gray-800 bg-gray-50 border-2 border-gray-300 focus:border-blue-400 outline-0 focus:outline-3 outline-blue-100 rounded-xl leading-none transition-all duration-100 
                     ${hasError && "border-red-300 focus:border-red-300 focus:outline-2 outline-red-100"}
-                `}
+                    `}
 				{...props}
+				id={props.id ?? ID}
 			/>
 			{hasError && (
 				<span className="text-sm text-gray-500 leading-none">
