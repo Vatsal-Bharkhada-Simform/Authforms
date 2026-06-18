@@ -6,27 +6,33 @@ export const signupValidator = z
 			.string()
 			.trim()
 			.min(1, "First name cannot be empty")
-			.max(30, "First name cannot exceed 30 characters"),
+			.max(30, "First name cannot exceed 30 characters")
+			.regex(/^[a-zA-Z]+$/, "First name must only contain alphabets"),
 
 		lastName: z
 			.string()
 			.trim()
 			.min(1, "Last name cannot be empty")
-			.max(30, "Last name cannot exceed 30 characters"),
+			.max(30, "Last name cannot exceed 30 characters")
+			.regex(/^[a-zA-Z]+$/, "Last name must only contain alphabets"),
 
-		email: z.email("Please enter a valid email address"),
+		email: z
+			.email("Please enter a valid email address")
+			.max(200, "Email cannot exceed 200 characters"),
 
 		city: z
 			.string()
 			.trim()
 			.min(1, "City cannot be empty")
-			.max(40, "City name cannot exceed 40 characters"),
+			.max(40, "City name cannot exceed 40 characters")
+			.regex(/^[a-zA-Z]+$/, "City must only contain alphabets"),
 
 		state: z
 			.string()
 			.trim()
 			.min(1, "State cannot be empty")
-			.max(40, "State name cannot exceed 40 characters"),
+			.max(40, "State name cannot exceed 40 characters")
+			.regex(/^[a-zA-Z]+$/, "State must only contain alphabets"),
 
 		address: z
 			.string()
@@ -104,5 +110,5 @@ export const signupValidator = z
 	})
 	.refine((obj) => obj.password === obj.confirmPassword, {
 		message: "Passwords do not match",
-		path: ["confirmPassword"], // Attaches the error message cleanly to the confirmPassword input field
+		path: ["confirmPassword"],
 	});
