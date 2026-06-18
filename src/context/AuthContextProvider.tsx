@@ -47,10 +47,13 @@ export function AuthContextProvider({ children }: { children: ReactElement }) {
 
 	function getUserData() {
 		if (isAuthenticated.status) {
-			return userData.find(
-				(user) => user.email === isAuthenticated.userEmail
+			return (
+				userData.find(
+					(user) => user.email === isAuthenticated.userEmail
+				) ?? null
 			);
 		}
+		return null;
 	}
 
 	const ctxValue = {

@@ -1,5 +1,6 @@
 import { createContext } from "react";
 import type { AuthContextType } from "../types/contextTypes";
+import type { SignUpType } from "../types/formDataTypes";
 
 export const AuthContext = createContext<AuthContextType>({
 	isAuthenticated: {
@@ -8,5 +9,7 @@ export const AuthContext = createContext<AuthContextType>({
 	handleSignUp: () => false,
 	handleLogin: () => false,
 	handleLogout: () => {},
-	getUserData: () => {},
+	getUserData: (): SignUpType => {
+		return {} as SignUpType;
+	},
 });

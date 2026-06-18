@@ -14,5 +14,5 @@ export type AuthContextType = {
 	handleSignUp: (data: SignUpType) => boolean;
 	handleLogin: (data: LoginType) => boolean;
 	handleLogout: () => void;
-	getUserData: () => void;
+	getUserData: () => SignUpType | null;
 };
