@@ -42,7 +42,7 @@ export function SignUpForm({ formStep, setFormStep }: SignUpFormProps) {
 	function signUpUser(data: SignUpType) {
 		const res = handleSignUp(data);
 		if (res) {
-			navigate("/");
+			navigate("/auth/login");
 		} else {
 			toast.error("Something went wrong");
 		}

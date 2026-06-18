@@ -1,4 +1,4 @@
-import { useState, type ReactElement } from "react";
+import { type ReactElement } from "react";
 import type { LoginType, SignUpType } from "../types/formDataTypes";
 import { AuthContext } from "./AuthContext";
 import toast from "react-hot-toast";
@@ -6,11 +6,13 @@ import { useLocalStorage } from "../hooks/useLocalStorage";
 import type { AuthenticationType } from "../types/contextTypes";
 
 const LOCALSTORAGE_STORE = "USER_DETAILS";
+const LOCALSTORAGE_AUTH_STORE = "USER_AUTH_DETAILS";
 
 export function AuthContextProvider({ children }: { children: ReactElement }) {
-	const [isAuthenticated, setIsAuthenticated] = useState<AuthenticationType>({
-		status: false,
-	});
+	const [isAuthenticated, setIsAuthenticated] =
+		useLocalStorage<AuthenticationType>(LOCALSTORAGE_AUTH_STORE, {
+			status: false,
+		});
 	const [userData, setUserData] = useLocalStorage<Array<SignUpType>>(
 		LOCALSTORAGE_STORE,
 		[]
