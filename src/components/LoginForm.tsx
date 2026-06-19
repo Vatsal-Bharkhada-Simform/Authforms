@@ -7,13 +7,13 @@ import { Input } from "../UI/Input";
 import { PasswordInput } from "../UI/PasswordInput";
 import Button from "../UI/Button";
 import { useNavigate } from "react-router";
-import toast from "react-hot-toast";
 
 export function LoginForm() {
 	const {
 		register,
 		handleSubmit,
 		formState: { errors, isSubmitting },
+		setError,
 	} = useForm<LoginType>({
 		resolver: zodResolver(loginValidator),
 		mode: "onBlur",
@@ -24,10 +24,12 @@ export function LoginForm() {
 
 	function loginUser(data: LoginType) {
 		const res = handleLogin(data);
-		if (res) {
+		if (res.status === "success") {
 			navigate("/");
 		} else {
-			toast.error("Something went wrong");
+			setError(res.errorField as keyof LoginType, {
+				message: res.message,
+			});
 		}
 	}
 
