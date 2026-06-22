@@ -34,7 +34,7 @@ export function AuthContextProvider({ children }: { children: ReactElement }) {
 				imageString = await getImageString(data.profileImage);
 			} catch (err) {
 				console.log(err);
-				return;
+				return false;
 			}
 
 			const combinedData = {

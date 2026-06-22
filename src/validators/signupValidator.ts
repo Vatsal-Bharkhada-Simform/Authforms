@@ -79,7 +79,7 @@ export const signupValidator = z
 			),
 
 		birthDate: z.coerce
-			.date()
+			.date<Date>()
 			.min(new Date("1900-01-01"), "Birth date cannot be before 1900")
 			.max(new Date(), "Birth date cannot be in the future"),
 
