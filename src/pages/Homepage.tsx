@@ -2,6 +2,7 @@ import { Check } from "lucide-react";
 import { useAuth } from "../context/useAuth";
 import { useNavigate } from "react-router";
 import Button from "../UI/Button";
+import { DataItem } from "../components/DataItem";
 
 export function Homepage() {
 	const { getUserData, handleLogout } = useAuth();
@@ -15,7 +16,7 @@ export function Homepage() {
 	return (
 		<main className="w-full h-screen overflow-hidden flex justify-center items-center">
 			<div className="w-xl flex flex-col gap-4 p-8 border border-gray-300 rounded-4xl shadow-card">
-				<h1 className="text-3xl">
+				<h1 className="text-3xl truncate">
 					Welcome, {`${userData?.firstName} ${userData?.lastName}`}
 				</h1>
 				<div className="flex gap-2">
@@ -29,56 +30,29 @@ export function Homepage() {
 						<h2 className="text-xl pb-2 mb-2 block border-b border-b-gray-300">
 							Contact details
 						</h2>
-						<div className="flex gap-2 text-base">
-							<span className="font-semibold flex-1">Phone</span>
-							<span className="flex-3">{userData?.contact}</span>
-						</div>
-						<div className="flex gap-2 text-base">
-							<span className="font-semibold flex-1">Email</span>
-							<span className="flex-3">{userData?.email}</span>
-						</div>
+						<DataItem title="Phone" value={userData?.contact} />
+						<DataItem title="Email" value={userData?.email} />
 					</div>
 					<div>
 						<h2 className="text-xl pb-2 mb-2 block border-b border-b-gray-300">
 							Address details
 						</h2>
-						<div className="flex gap-2 text-base">
-							<span className="font-semibold flex-1">City</span>
-							<span className="flex-3">{userData?.city}</span>
-						</div>
-						<div className="flex gap-2 text-base">
-							<span className="font-semibold flex-1">State</span>
-							<span className="flex-3">{userData?.state}</span>
-						</div>
-						<div className="flex gap-2 text-base">
-							<span className="font-semibold flex-1">
-								Address
-							</span>
-							<span className="flex-3">{userData?.address}</span>
-						</div>
+						<DataItem title="City" value={userData?.city} />
+						<DataItem title="State" value={userData?.state} />
+						<DataItem title="Address" value={userData?.address} />
 					</div>
 					<div>
 						<h2 className="text-xl pb-2 mb-2 block border-b border-b-gray-300">
 							Personal details
 						</h2>
-						<div className="flex gap-2 text-base">
-							<span className="font-semibold flex-1">Age</span>
-							<span className="flex-3">{userData?.age}</span>
-						</div>
-						<div className="flex gap-2 text-base">
-							<span className="font-semibold flex-1">Gender</span>
-							<span className="flex-3">{userData?.gender}</span>
-						</div>
-						<div className="flex gap-2 text-base">
-							<span className="font-semibold flex-1">
-								Birth date
-							</span>
-							<span className="flex-3">
-								{new Date(
-									userData?.birthDate ?? ""
-								).toDateString()}
-							</span>
-						</div>
+						<DataItem title="Age" value={userData?.age} />
+						<DataItem title="Gender" value={userData?.gender} />
+						<DataItem
+							title="Birth date"
+							value={new Date(
+								userData?.birthDate ?? ""
+							).toDateString()}
+						/>
 					</div>
 				</div>
 				<Button variant="DANGER" onClick={handleLogout}>
