@@ -191,7 +191,9 @@ export function SignUpForm({ formStep, setFormStep }: SignUpFormProps) {
 			</div>
 			<div className="flex gap-4 justify-between">
 				{formStep === 0 && (
-					<div className="flex gap-2 pl-2 items-center relative">
+					<div
+						className={`flex gap-2 px-2 items-center relative rounded-xl ${errors.agreementConfirmation?.message && "border-2 border-red-400 bg-red-100"}`}
+					>
 						<Input
 							type="checkbox"
 							{...register("agreementConfirmation")}
@@ -202,14 +204,7 @@ export function SignUpForm({ formStep, setFormStep }: SignUpFormProps) {
 							htmlFor="agreementConfirmation"
 							className="text-sm"
 						>
-							{errors?.agreementConfirmation &&
-							errors?.agreementConfirmation?.message !== "" ? (
-								<div className="text-red-400">
-									{errors?.agreementConfirmation?.message}
-								</div>
-							) : (
-								"I accept the Terms and Privacy Policy"
-							)}
+							I accept the Terms and Privacy Policy
 						</label>
 					</div>
 				)}
