@@ -18,14 +18,14 @@ export function Select<const T extends Array<string>>({
 	errorText = "",
 	...props
 }: SelectProps<T>) {
-	const ID = useId();
+	const id = useId();
 	const hasError = errorText.trim() !== "";
 
 	return (
 		<div className="flex flex-col gap-1 mb-4">
 			{labelText.trim() && (
 				<label
-					htmlFor={props.id ?? ID}
+					htmlFor={props.id ?? id}
 					className={`md:text-md font-inter tracking-tight text-primary leading-none ${hasError && "text-red-500"}`}
 				>
 					{labelText}
@@ -40,7 +40,7 @@ export function Select<const T extends Array<string>>({
                 `}
 				defaultValue={defaultSelected ?? defaultOptionText ?? "Select"}
 				{...props}
-				id={props.id ?? ID}
+				id={props.id ?? id}
 			>
 				<option value="Select">{defaultOptionText ?? "Select"}</option>
 				{options.map((option) => {

@@ -11,14 +11,14 @@ export function Input({
 	type,
 	...props
 }: InputProps) {
-	const ID = useId();
+	const id = useId();
 	const hasError = errorText.trim() !== "";
 
 	return (
 		<div className={`flex flex-col gap-1 ${type !== "checkbox" && "mb-4"}`}>
 			{labelText.trim() && (
 				<label
-					htmlFor={props.id ?? ID}
+					htmlFor={props.id ?? id}
 					className={`md:text-md font-inter tracking-tight text-primary leading-none ${hasError ? "text-red-500" : "text-gray-700"}`}
 				>
 					{labelText}
@@ -33,7 +33,7 @@ export function Input({
                     ${hasError && "border-red-300 focus:border-red-300 focus:outline-2 outline-red-100"}
                     `}
 				{...props}
-				id={props.id ?? ID}
+				id={props.id ?? id}
 			/>
 			{hasError && (
 				<span className="text-sm text-gray-500 leading-none">

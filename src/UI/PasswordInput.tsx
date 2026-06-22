@@ -12,14 +12,14 @@ export function PasswordInput({
 	...props
 }: InputProps) {
 	const [showPassword, setShowPassword] = useState(false);
-	const ID = useId();
+	const id = useId();
 	const hasError = errorText.trim() !== "";
 
 	return (
 		<div className="flex flex-col gap-1 mb-4">
 			{labelText.trim() && (
 				<label
-					htmlFor={props.id ?? ID}
+					htmlFor={props.id ?? id}
 					className={`md:text-md font-inter tracking-tight text-primary leading-none ${hasError && "text-red-500"}`}
 				>
 					{labelText}
@@ -36,12 +36,13 @@ export function PasswordInput({
 					type={showPassword ? "text" : "password"}
 					className="outline-none flex-1"
 					{...props}
-					id={props.id ?? ID}
+					id={props.id ?? id}
 				/>
 				<button
 					onClick={() => setShowPassword((prev) => !prev)}
 					className="p-1 cursor-pointer"
 					title="Toggle passoword visibility"
+					type="button"
 				>
 					{showPassword ? <EyeOff size={17} /> : <Eye size={17} />}
 				</button>
