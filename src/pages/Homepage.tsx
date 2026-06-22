@@ -1,16 +1,15 @@
 import { Check } from "lucide-react";
+import { Navigate } from "react-router";
 import { useAuth } from "../context/useAuth";
-import { useNavigate } from "react-router";
 import Button from "../UI/Button";
 import { DataItem } from "../components/DataItem";
 
 export function Homepage() {
 	const { getUserData, handleLogout } = useAuth();
 	const userData = getUserData();
-	const navigate = useNavigate();
 
 	if (!userData || userData === null) {
-		navigate("/auth/login");
+		return <Navigate to={"/auth/login"} replace />;
 	}
 
 	return (
