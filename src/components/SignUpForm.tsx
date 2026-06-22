@@ -164,6 +164,7 @@ export function SignUpForm({ formStep, setFormStep }: SignUpFormProps) {
 							type="date"
 							{...register("birthDate", { valueAsDate: true })}
 							labelText="Birth Date"
+							max={new Date().toISOString().split("T")[0]}
 							placeholder=""
 							errorText={errors?.birthDate?.message ?? ""}
 							disabled={isSubmitting}
