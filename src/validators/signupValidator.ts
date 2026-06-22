@@ -41,7 +41,7 @@ export const signupValidator = z
 			.max(200, "Address cannot exceed 200 characters"),
 
 		age: z
-			.number()
+			.number("Please enter a valid age")
 			.int("Age must be a whole number")
 			.min(1, "Age must be at least 1")
 			.max(120, "Please enter a valid age under 120"),
