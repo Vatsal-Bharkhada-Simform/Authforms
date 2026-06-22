@@ -15,9 +15,14 @@ export function useLocalStorage<T>(store: string, defaultValue: T) {
 function fetchData<T>(store: string, defaultValue: T) {
 	const data = localStorage.getItem(store);
 	if (data === null) {
-		localStorage.setItem(store, JSON.stringify(defaultValue));
 		return defaultValue;
 	}
-	const parsedData = JSON.parse(data) as T;
+	let parsedData: T;
+	try {
+		parsedData = JSON.parse(data) as T;
+	} catch (err) {
+		console.log(err);
+		parsedData = defaultValue;
+	}
 	return parsedData;
 }
