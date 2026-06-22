@@ -1,4 +1,4 @@
-import { type ReactElement } from "react";
+import { useCallback, useMemo, type ReactElement } from "react";
 import toast from "react-hot-toast";
 import type { LoginType, SignUpType } from "../types/formDataTypes";
 import { useLocalStorage } from "../hooks/useLocalStorage";
@@ -21,69 +21,84 @@ export function AuthContextProvider({ children }: { children: ReactElement }) {
 		[]
 	);
 
-	function handleSignUp(data: SignUpType) {
-		setUserData((prev) => [...prev, data]);
-		setIsAuthenticated({
-			status: true,
-			userEmail: data.email,
-		});
-		toast.success("Signed up successfully!");
-		return true;
-	}
+	const handleSignUp = useCallback(
+		function handleSignUp(data: SignUpType) {
+			setUserData((prev) => [...prev, data]);
+			setIsAuthenticated({
+				status: true,
+				userEmail: data.email,
+			});
+			toast.success("Signed up successfully!");
+			return true;
+		},
+		[setIsAuthenticated, setUserData]
+	);
 
-	function handleLogin(data: LoginType): LoginReturnType {
-		const user = userData.find((user) => user.email === data.email);
-		if (!user) {
+	const handleLogin = useCallback(
+		function handleLogin(data: LoginType): LoginReturnType {
+			const user = userData.find((user) => user.email === data.email);
+			if (!user) {
+				return {
+					status: "failed",
+					errorField: "email",
+					message: "User does not exist",
+				};
+			}
+			// Passwords stored and compared as plain string only for practical purposes.
+			// This is not a standard development approach and is not recommended for real applications.
+			if (!(user.password === data.password)) {
+				return {
+					status: "failed",
+					errorField: "password",
+					message: "Incorrect password",
+				};
+			}
+
+			setIsAuthenticated({
+				status: true,
+				userEmail: user.email,
+			});
+			toast.success("Logged in successfully!");
 			return {
-				status: "failed",
-				errorField: "email",
-				message: "User does not exist",
+				status: "success",
 			};
-		}
-		// Passwords stored and compared as plain string only for practical purposes.
-		// This is not a standard development approach and is not recommended for real applications.
-		if (!(user.password === data.password)) {
-			return {
-				status: "failed",
-				errorField: "password",
-				message: "Incorrect password",
-			};
-		}
+		},
+		[setIsAuthenticated, userData]
+	);
 
-		setIsAuthenticated({
-			status: true,
-			userEmail: user.email,
-		});
-		toast.success("Logged in successfully!");
-		return {
-			status: "success",
-		};
-	}
+	const handleLogout = useCallback(
+		function handleLogout() {
+			setIsAuthenticated({
+				status: false,
+			});
+		},
+		[setIsAuthenticated]
+	);
 
-	function handleLogout() {
-		setIsAuthenticated({
-			status: false,
-		});
-	}
+	const getUserData = useCallback(
+		function getUserData() {
+			if (isAuthenticated.status) {
+				return (
+					userData.find(
+						(user) => user.email === isAuthenticated.userEmail
+					) ?? null
+				);
+			}
+			return null;
+		},
+		[isAuthenticated, userData]
+	);
 
-	function getUserData() {
-		if (isAuthenticated.status) {
-			return (
-				userData.find(
-					(user) => user.email === isAuthenticated.userEmail
-				) ?? null
-			);
-		}
-		return null;
-	}
-
-	const ctxValue = {
-		isAuthenticated,
-		handleSignUp,
-		handleLogin,
-		handleLogout,
-		getUserData,
-	};
+	const ctxValue = useMemo(
+		() => ({
+			isAuthenticated,
+			handleSignUp,
+			handleLogin,
+			handleLogout,
+			getUserData,
+		}),
+		[getUserData, isAuthenticated, handleLogin, handleSignUp, handleLogout]
+	);
 
 	return (
 		<AuthContext.Provider value={ctxValue}>{children}</AuthContext.Provider>
