@@ -1,5 +1,7 @@
 import z from "zod";
 
+const MAX_FILE_SIZE = 1_000_000;
+
 export const signupValidator = z
 	.object({
 		firstName: z
@@ -59,15 +61,24 @@ export const signupValidator = z
 
 		profileImage: z
 			.instanceof(FileList)
+			.refine((files) => files.length > 0, {
+				message: "Please select an image",
+			})
 			.refine(
 				(file) =>
 					["image/png", "image/jpeg", "image/jpg"].includes(
-						file[0].type
+						file[0]?.type
 					),
 				{ message: "Only .jpeg, .jpg, and .png formats are accepted" }
+			)
+			.refine(
+				(file) => {
+					return file[0]?.size < MAX_FILE_SIZE;
+				},
+				{ message: "File size cannot be greater than 1MB" }
 			),
 
-		birthDate: z
+		birthDate: z.coerce
 			.date()
 			.min(new Date("1900-01-01"), "Birth date cannot be before 1900")
 			.max(new Date(), "Birth date cannot be in the future"),

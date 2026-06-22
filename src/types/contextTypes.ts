@@ -1,4 +1,4 @@
-import type { LoginType, SignUpType } from "./formDataTypes";
+import type { LoginType, SignUpType, UserDataType } from "./formDataTypes";
 
 export type AuthenticationType =
 	| {
@@ -21,8 +21,8 @@ export type LoginReturnType =
 
 export type AuthContextType = {
 	isAuthenticated: AuthenticationType;
-	handleSignUp: (data: SignUpType) => boolean;
+	handleSignUp: (data: SignUpType) => Promise<boolean>;
 	handleLogin: (data: LoginType) => LoginReturnType;
 	handleLogout: () => void;
-	getUserData: () => SignUpType | null;
+	getUserData: () => UserDataType | null;
 };

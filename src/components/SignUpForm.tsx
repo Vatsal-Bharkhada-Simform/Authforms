@@ -4,6 +4,7 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router";
 import { zodResolver } from "@hookform/resolvers/zod";
+import type z from "zod";
 import { signupValidator } from "../validators/signupValidator";
 import { useAuth } from "../context/useAuth";
 import type { SignUpType } from "../types/formDataTypes";
@@ -31,7 +32,7 @@ export function SignUpForm({ formStep, setFormStep }: SignUpFormProps) {
 		register,
 		handleSubmit,
 		trigger,
-	} = useForm<SignUpType>({
+	} = useForm<z.input<typeof signupValidator>>({
 		resolver: zodResolver(signupValidator),
 		mode: "onBlur",
 	});
@@ -39,8 +40,8 @@ export function SignUpForm({ formStep, setFormStep }: SignUpFormProps) {
 	const { handleSignUp } = useAuth();
 	const navigate = useNavigate();
 
-	function signUpUser(data: SignUpType) {
-		const res = handleSignUp(data);
+	async function signUpUser(data: SignUpType) {
+		const res = await handleSignUp(data);
 		if (res) {
 			navigate("/auth/login");
 		} else {
@@ -162,10 +163,9 @@ export function SignUpForm({ formStep, setFormStep }: SignUpFormProps) {
 						/>
 						<Input
 							type="date"
-							{...register("birthDate", { valueAsDate: true })}
+							{...register("birthDate")}
 							labelText="Birth Date"
 							max={new Date().toISOString().split("T")[0]}
-							placeholder=""
 							errorText={errors?.birthDate?.message ?? ""}
 							disabled={isSubmitting}
 						/>

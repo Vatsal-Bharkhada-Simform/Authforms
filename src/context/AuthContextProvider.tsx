@@ -1,11 +1,16 @@
 import { useCallback, useMemo, type ReactElement } from "react";
 import toast from "react-hot-toast";
-import type { LoginType, SignUpType } from "../types/formDataTypes";
+import type {
+	LoginType,
+	SignUpType,
+	UserDataType,
+} from "../types/formDataTypes";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import type {
 	AuthenticationType,
 	LoginReturnType,
 } from "../types/contextTypes";
+import { getImageString } from "../utils/getImageString";
 import { AuthContext } from "./AuthContext";
 
 const LOCALSTORAGE_STORE = "USER_DETAILS";
@@ -16,22 +21,33 @@ export function AuthContextProvider({ children }: { children: ReactElement }) {
 		useLocalStorage<AuthenticationType>(LOCALSTORAGE_AUTH_STORE, {
 			status: false,
 		});
-	const [userData, setUserData] = useLocalStorage<Array<SignUpType>>(
+	const [userData, setUserData] = useLocalStorage<Array<UserDataType>>(
 		LOCALSTORAGE_STORE,
 		[]
 	);
 
 	const handleSignUp = useCallback(
-		function handleSignUp(data: SignUpType) {
-			setUserData((prev) => [...prev, data]);
-			setIsAuthenticated({
-				status: true,
-				userEmail: data.email,
-			});
+		async function handleSignUp(data: SignUpType) {
+			let imageString: string;
+
+			try {
+				imageString = await getImageString(data.profileImage);
+			} catch (err) {
+				console.log(err);
+				return;
+			}
+
+			const combinedData = {
+				...data,
+				profileImageString: imageString,
+			};
+
+			setUserData((prev) => [...prev, combinedData]);
+
 			toast.success("Signed up successfully!");
 			return true;
 		},
-		[setIsAuthenticated, setUserData]
+		[setUserData]
 	);
 
 	const handleLogin = useCallback(
