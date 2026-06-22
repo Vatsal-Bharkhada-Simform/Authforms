@@ -40,6 +40,8 @@ export function AuthContextProvider({ children }: { children: ReactElement }) {
 				message: "User does not exist",
 			};
 		}
+		// Passwords stored and compared as plain string only for practical purposes.
+		// This is not a standard development approach and is not recommended for real applications.
 		if (!(user.password === data.password)) {
 			return {
 				status: "failed",
