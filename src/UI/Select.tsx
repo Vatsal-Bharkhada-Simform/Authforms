@@ -42,7 +42,9 @@ export function Select<const T extends Array<string>>({
 				{...props}
 				id={props.id ?? id}
 			>
-				<option value="Select">{defaultOptionText ?? "Select"}</option>
+				<option value={defaultOptionText} disabled>
+					{defaultOptionText ?? "Select"}
+				</option>
 				{options.map((option) => {
 					return (
 						<option value={option} key={option}>
