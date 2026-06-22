@@ -1,12 +1,12 @@
 import { type ReactElement } from "react";
-import type { LoginType, SignUpType } from "../types/formDataTypes";
-import { AuthContext } from "./AuthContext";
 import toast from "react-hot-toast";
+import type { LoginType, SignUpType } from "../types/formDataTypes";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import type {
 	AuthenticationType,
 	LoginReturnType,
 } from "../types/contextTypes";
+import { AuthContext } from "./AuthContext";
 
 const LOCALSTORAGE_STORE = "USER_DETAILS";
 const LOCALSTORAGE_AUTH_STORE = "USER_AUTH_DETAILS";

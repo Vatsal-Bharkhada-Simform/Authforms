@@ -1,12 +1,12 @@
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router";
+import { zodResolver } from "@hookform/resolvers/zod";
 import type { LoginType } from "../types/formDataTypes";
 import { loginValidator } from "../validators/loginValidator";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useAuth } from "../context/useAuth";
 import { Input } from "../UI/Input";
 import { PasswordInput } from "../UI/PasswordInput";
 import Button from "../UI/Button";
-import { useNavigate } from "react-router";
 
 export function LoginForm() {
 	const {

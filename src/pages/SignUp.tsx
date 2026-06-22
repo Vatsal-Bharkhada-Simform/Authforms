@@ -1,7 +1,7 @@
 import { useState } from "react";
+import { Link } from "react-router";
 import { SignUpForm } from "../components/SignUpForm";
 import { AuthFormComposition } from "../layout/AuthFormComposition";
-import { Link } from "react-router";
 
 const stepMessages = [
 	{

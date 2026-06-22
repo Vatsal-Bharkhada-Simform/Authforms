@@ -1,16 +1,16 @@
 import { useForm } from "react-hook-form";
-import { signupValidator } from "../validators/signupValidator";
+import { type MouseEvent } from "react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { signupValidator } from "../validators/signupValidator";
 import { useAuth } from "../context/useAuth";
 import type { SignUpType } from "../types/formDataTypes";
 import { Input } from "../UI/Input";
 import Button from "../UI/Button";
 import { PasswordInput } from "../UI/PasswordInput";
 import { Select } from "../UI/Select";
-import { type MouseEvent } from "react";
-import { ArrowLeft, ArrowRight } from "lucide-react";
-import toast from "react-hot-toast";
-import { useNavigate } from "react-router";
 
 type SignUpFormProps = {
 	formStep: number;
