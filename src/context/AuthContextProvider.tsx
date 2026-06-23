@@ -105,6 +105,13 @@ export function AuthContextProvider({ children }: { children: ReactElement }) {
 		[isAuthenticated, userData]
 	);
 
+	const userExists = useCallback(
+		function userExists(email: string) {
+			return userData.findIndex((user) => user.email === email) !== -1;
+		},
+		[userData]
+	);
+
 	const ctxValue = useMemo(
 		() => ({
 			isAuthenticated,
@@ -112,8 +119,16 @@ export function AuthContextProvider({ children }: { children: ReactElement }) {
 			handleLogin,
 			handleLogout,
 			getUserData,
+			userExists,
 		}),
-		[getUserData, isAuthenticated, handleLogin, handleSignUp, handleLogout]
+		[
+			getUserData,
+			isAuthenticated,
+			handleLogin,
+			handleSignUp,
+			handleLogout,
+			userExists,
+		]
 	);
 
 	return (

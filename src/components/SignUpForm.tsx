@@ -32,12 +32,14 @@ export function SignUpForm({ formStep, setFormStep }: SignUpFormProps) {
 		register,
 		handleSubmit,
 		trigger,
+		setError,
+		getValues,
 	} = useForm<z.input<typeof signupValidator>>({
 		resolver: zodResolver(signupValidator),
 		mode: "onBlur",
 	});
 
-	const { handleSignUp } = useAuth();
+	const { handleSignUp, userExists } = useAuth();
 	const navigate = useNavigate();
 
 	async function signUpUser(data: SignUpType) {
@@ -52,6 +54,12 @@ export function SignUpForm({ formStep, setFormStep }: SignUpFormProps) {
 	async function incrementStep(e: MouseEvent<HTMLButtonElement>) {
 		e.preventDefault();
 		const isValid = await trigger(Fields[formStep]);
+		if (formStep === 0 && isValid && userExists(getValues("email"))) {
+			setError("email", {
+				message: "User with this email already exists",
+			});
+			return;
+		}
 
 		if (isValid && formStep < Fields.length - 1) {
 			setFormStep((prev) => prev + 1);

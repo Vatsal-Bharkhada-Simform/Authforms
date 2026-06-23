@@ -25,4 +25,5 @@ export type AuthContextType = {
 	handleLogin: (data: LoginType) => LoginReturnType;
 	handleLogout: () => void;
 	getUserData: () => UserDataType | null;
+	userExists: (email: string) => boolean;
 };
