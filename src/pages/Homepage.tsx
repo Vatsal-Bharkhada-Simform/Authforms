@@ -8,7 +8,7 @@ export function Homepage() {
 	const { getUserData, handleLogout } = useAuth();
 	const userData = getUserData();
 
-	if (!userData || userData === null) {
+	if (userData === null) {
 		return <Navigate to={"/auth/login"} replace />;
 	}
 
